@@ -47,6 +47,8 @@ item {
 .
 ```
 #### Second: Convert the Pascal VOC to TFRecord
+**Set path of your current directory, slim directory**
+**Edit setpath.bat according to your directory**
 
 The TFRecord format is a simple format for storing a sequence of binary records. 
 1. To do this we will first convert the XML file to CSV and than we will convert the "train.csv" and "val.csv" to TFRecord.
@@ -69,3 +71,30 @@ python Create_tfrecord.py --csv_location=data/val_labels.csv --output_location=d
 ```
 
 #### Third: Train
+**Download "Faster R-CNN ResNet50 V1 640x640" pretrained model from "https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md" in your current directory**
+**Copy "faster_rcnn_resnet50_v1_640x640_coco17.config" from "object_detection\configs\tf2" to current directory**
+
+Edit "faster_rcnn_resnet50_v1_640x640_coco17.config" 
+* Line 10 **num_classes: 1** according to your class.
+* Line 97 **num_steps: 100000** How much step you want to train
+* Line 113 **fine_tune_checkpoint: your_directory/faster_rcnn_resnet50_v1_640x640_coco17/checkpoint/ckpt-0"
+* Line 126 **label_map_path: "your_directory/annotations/label_map.pbtxt"**
+* Line 128 **input_path: "train.record"** Path to train.record file
+* Line 139 **label_map_path: "your_directory/annotations/label_map.pbtxt"**
+* Line 143 **input_path: "val.record"** Path to val.record file
+
+Create "train_result" folder in the directory.
+
+To train use the following 
+```
+python object_detection/model_main_tf2.py --pipeline_config_path=faster_rcnn_resnet50_v1_640x640_coco17.config --model_dir=train_result --alsologtostderr
+```
+
+#### Fourth : Test
+Create "output_inference_graph" in current folder
+
+To convert the trained checkpoint to saved model used the following script
+```
+python object_detection/exporter_main_v2.py --trained_checkpoint_dir train_result --pipeline_config_path faster_rcnn_resnet50_v1_640x640_coco17.config --output_directory output_inference_graph
+```
+
