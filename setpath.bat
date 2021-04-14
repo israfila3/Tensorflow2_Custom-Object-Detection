@@ -1,0 +1,1 @@
+set PYTHONPATH=%PYTHONPATH%;path_to_your_directory;path_to_your_directory\slim;path_to_your_directory\object_detection\protos
