@@ -91,7 +91,7 @@ python object_detection/model_main_tf2.py --pipeline_config_path=faster_rcnn_res
 ```
 
 #### Fourth : Test
-Create "output_inference_graph" in current folder
+Create "output_inference_graph" falder in current directory
 
 To convert the trained checkpoint to saved model used the following script
 ```
